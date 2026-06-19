@@ -18,6 +18,8 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         /* Намного больше летающих сердечек */
@@ -40,19 +42,36 @@
             clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
         }
 
+        /* Особые быстрые сердечки для кликов */
+        .click-heart {
+            position: absolute;
+            z-index: 999;
+            pointer-events: none;
+            background: rgba(255, 71, 108, 0.8);
+            clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+            animation: clickFloat 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
         @keyframes floatUp {
             0% {
                 transform: translateY(0) rotate(0deg) scale(0.5);
                 opacity: 0;
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 0.8;
-            }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
             100% {
                 transform: translateY(-110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes clickFloat {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -150px) scale(1.5) rotate(15deg);
                 opacity: 0;
             }
         }
@@ -62,9 +81,9 @@
             width: 90%;
             max-width: 400px;
             margin: 20px auto;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
             box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
             padding: 25px;
             text-align: center;
@@ -72,11 +91,29 @@
             border: 2px solid rgba(255, 182, 193, 0.6);
         }
 
-        h1 {
-            font-size: 19px;
+        /* Интерактивный счетчик отношений */
+        .love-counter {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 5px 15px rgba(255, 182, 193, 0.2);
+            margin-bottom: 20px;
+            border: 1px solid #ffe3e3;
+        }
+        .counter-title {
+            font-size: 11px;
+            color: #ff5e7e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        .counter-time {
+            font-size: 13px;
+            color: #4a4a4a;
+        }
+        .counter-time b {
             color: #ff476c;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         /* Улучшенный плеер */
@@ -84,7 +121,7 @@
             background: white;
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.15);
             margin-bottom: 20px;
             border: 1px solid #ffe3e3;
         }
@@ -96,10 +133,10 @@
             overflow-x: auto;
             padding: 5px 5px 15px 5px;
             margin-bottom: 15px;
-            scrollbar-width: none; /* Скрываем стандартный скроллбар */
+            scrollbar-width: none;
         }
         .playlists-tabs::-webkit-scrollbar {
-            display: none; /* Скрываем скроллбар для Safari и Chrome */
+            display: none;
         }
         .playlist-tab {
             flex: 0 0 75px;
@@ -110,18 +147,18 @@
         .playlist-tab-img {
             width: 55px;
             height: 55px;
-            border-radius: 14px;
+            border-radius: 16px;
             background-size: cover;
             background-position: center;
             border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(255, 182, 193, 0.4);
+            box-shadow: 0 4px 8px rgba(255, 182, 193, 0.3);
             margin: 0 auto 5px auto;
             transition: transform 0.2s, border-color 0.2s;
         }
         .playlist-tab.active .playlist-tab-img {
             border-color: #ff5e7e;
             transform: scale(1.08);
-            box-shadow: 0 4px 12px rgba(255, 94, 126, 0.5);
+            box-shadow: 0 4px 12px rgba(255, 94, 126, 0.4);
         }
         .playlist-tab-name {
             font-size: 9px;
@@ -136,7 +173,7 @@
         .vinyl-container {
             width: 140px;
             height: 140px;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 10px auto;
             position: relative;
         }
 
@@ -171,6 +208,33 @@
             justify-content: center;
             color: white;
             font-size: 20px;
+        }
+
+        /* Анимированный эквалайзер под обложкой */
+        .equalizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4px;
+            height: 20px;
+            margin: 8px 0 12px 0;
+        }
+        .eq-bar {
+            width: 3px;
+            height: 4px;
+            background-color: #ff5e7e;
+            border-radius: 3px;
+            animation: bounce 0.8s ease-in-out infinite alternate;
+            animation-play-state: paused;
+        }
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; animation-duration: 0.6s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.3s; animation-duration: 0.9s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.1s; animation-duration: 0.7s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.4s; animation-duration: 0.5s; }
+
+        @keyframes bounce {
+            0% { height: 4px; }
+            100% { height: 20px; }
         }
 
         .track-info {
@@ -294,7 +358,11 @@
     <div class="hearts-container" id="heartsContainer"></div>
 
     <div class="container">
-        <h1>Для любимой Лизы 🌸</h1>
+        <!-- Интерактивный счетчик отношений -->
+        <div class="love-counter">
+            <div class="counter-title">Тёма & Лиза 💞</div>
+            <div class="counter-time" id="counterTime">Загружаем время счастья...</div>
+        </div>
 
         <!-- Плеер -->
         <div class="player-card">
@@ -308,6 +376,15 @@
                 <div class="vinyl" id="vinyl">
                     <div class="vinyl-cover" id="vinylCover">❤️</div>
                 </div>
+            </div>
+
+            <!-- Анимированный эквалайзер -->
+            <div class="equalizer">
+                <div class="eq-bar" id="eq1"></div>
+                <div class="eq-bar" id="eq2"></div>
+                <div class="eq-bar" id="eq3"></div>
+                <div class="eq-bar" id="eq4"></div>
+                <div class="eq-bar" id="eq5"></div>
             </div>
             
             <div class="track-info">
@@ -345,8 +422,27 @@
 
     <script>
         // --- 1. НАСТРОЙКА ИСТОЧНИКА ---
-        const GH_USER = "ВАШ_НИК_НА_GITHUB";
+        const GH_USER = "Traxshbot";
         const GH_REPO = "liza-love-app";
+
+        // --- 2. НАСТРОЙКА ДАТЫ ОТНОШЕНИЙ (НАСТРОЕНО НА 29.05.2026) ---
+        const startLoveDate = new Date(2026, 4, 29, 0, 0); 
+
+        function updateLoveCounter() {
+            const now = new Date();
+            const diff = now - startLoveDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('counterTime').innerHTML = 
+                `Мы вместе: <b>${days}д</b> ${hours}ч ${minutes}м ${seconds}с`;
+        }
+        setInterval(updateLoveCounter, 1000);
+        updateLoveCounter();
+
 
         let playlists = [];
         let currentPlaylistIndex = 0;
@@ -362,8 +458,8 @@
         const currentTimeText = document.getElementById('currentTime');
         const totalTimeText = document.getElementById('totalTime');
         const playlistsTabs = document.getElementById('playlistsTabs');
+        const eqBars = document.querySelectorAll('.eq-bar');
 
-        // Резервный плейлист на случай ошибок
         const fallbackPlaylists = [{
             name: "Любимое 💖",
             cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300",
@@ -375,17 +471,16 @@
             }]
         }];
 
-        // Функция сканирования Git-дерева репозитория
+        // Сканирование плейлистов из GitHub
         async function fetchPlaylists() {
             const cached = localStorage.getItem('liza_playlists_data');
             const cacheTime = localStorage.getItem('liza_playlists_time');
             
-            if (cached && cacheTime && (Date.now() - cacheTime < 30 * 60 * 1000)) {
+            if (cached && cacheTime && (Date.now() - cacheTime < 10 * 60 * 1000)) { 
                 return JSON.parse(cached);
             }
 
             try {
-                // Запрашиваем структуру файлов рекурсивно за один запрос
                 const response = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/git/trees/main?recursive=1`);
                 if (!response.ok) throw new Error("Не удалось получить структуру файлов");
                 
@@ -393,13 +488,11 @@
                 const tree = data.tree || [];
                 const playlistsMap = {};
 
-                // Находим все файлы в папке music/
                 const musicFiles = tree.filter(item => item.path.startsWith('music/') && item.type === 'blob');
 
-                // 1. Сначала определяем плейлисты и ищем их общие обложки (cover.jpg/png)
                 musicFiles.forEach(file => {
                     const parts = file.path.split('/');
-                    if (parts.length < 3) return; // Пропускаем файлы вне подпапок
+                    if (parts.length < 3) return;
 
                     const playlistName = parts[1];
                     const fileName = parts[2];
@@ -407,7 +500,7 @@
                     if (!playlistsMap[playlistName]) {
                         playlistsMap[playlistName] = {
                             name: playlistName,
-                            cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300", // дефолтная обложка
+                            cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300",
                             tracks: []
                         };
                     }
@@ -415,13 +508,11 @@
                     const rawUrl = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${encodeURIComponent(file.path)}`;
                     const lowerName = fileName.toLowerCase();
 
-                    // Если файл — cover.jpg или cover.png, устанавливаем его как обложку плейлиста
                     if (lowerName === 'cover.jpg' || lowerName === 'cover.png' || lowerName === 'cover.jpeg') {
                         playlistsMap[playlistName].cover = rawUrl;
                     }
                 });
 
-                // 2. Теперь собираем песни для каждого плейлиста
                 musicFiles.forEach(file => {
                     const parts = file.path.split('/');
                     if (parts.length < 3) return;
@@ -435,7 +526,6 @@
                         const artist = songParts[0] || "Тёма";
                         const title = songParts[1] || nameWithoutExt;
 
-                        // Ищем индивидуальную обложку для трека (если она есть)
                         const songCoverJpg = nameWithoutExt + '.jpg';
                         const songCoverPng = nameWithoutExt + '.png';
                         const specificCoverFile = musicFiles.find(f => {
@@ -446,7 +536,6 @@
 
                         const rawSongUrl = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${encodeURIComponent(file.path)}`;
                         
-                        // Если индивидуальной обложки нет, используем общую cover.jpg плейлиста
                         const trackCover = specificCoverFile 
                             ? `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/${encodeURIComponent(specificCoverFile.path)}` 
                             : playlistsMap[playlistName].cover;
@@ -460,9 +549,7 @@
                     }
                 });
 
-                // Превращаем карту в массив и убираем пустые плейлисты
                 const playlistsList = Object.values(playlistsMap).filter(p => p.tracks.length > 0);
-
                 if (playlistsList.length === 0) return fallbackPlaylists;
 
                 localStorage.setItem('liza_playlists_data', JSON.stringify(playlistsList));
@@ -475,14 +562,16 @@
             }
         }
 
-        // Отрисовка вкладок плейлистов вверху плеера
         function renderPlaylists() {
             playlistsTabs.innerHTML = '';
             playlists.forEach((pl, idx) => {
                 const tab = document.createElement('div');
                 tab.classList.add('playlist-tab');
                 if (idx === currentPlaylistIndex) tab.classList.add('active');
-                tab.onclick = () => selectPlaylist(idx);
+                tab.onclick = (e) => {
+                    e.stopPropagation(); 
+                    selectPlaylist(idx);
+                };
 
                 tab.innerHTML = `
                     <div class="playlist-tab-img" style="background-image: url('${pl.cover}')"></div>
@@ -492,12 +581,10 @@
             });
         }
 
-        // Выбор плейлиста Лизой
         function selectPlaylist(index) {
             currentPlaylistIndex = index;
             currentTrackIndex = 0;
             
-            // Обновляем визуальное выделение вкладки
             const tabs = document.querySelectorAll('.playlist-tab');
             tabs.forEach((tab, i) => {
                 if (i === index) tab.classList.add('active');
@@ -506,10 +593,10 @@
 
             loadTrack(currentTrackIndex);
             
-            // Если музыка уже играла, продолжаем воспроизведение
             if (playBtn.textContent === '⏸️') {
                 audio.play();
                 vinyl.style.animationPlayState = 'running';
+                setEqState(true);
             }
             spawnHeartsBurst(8);
         }
@@ -536,17 +623,25 @@
 
         initPlayer();
 
-        // Управление воспроизведением
-        playBtn.addEventListener('click', () => {
+        function setEqState(isPlaying) {
+            eqBars.forEach(bar => {
+                bar.style.animationPlayState = isPlaying ? 'running' : 'paused';
+            });
+        }
+
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (audio.paused) {
                 audio.play();
                 playBtn.textContent = '⏸️';
                 vinyl.style.animationPlayState = 'running';
+                setEqState(true);
                 spawnHeartsBurst(10);
             } else {
                 audio.pause();
                 playBtn.textContent = '▶️';
                 vinyl.style.animationPlayState = 'paused';
+                setEqState(false);
             }
         });
 
@@ -559,6 +654,7 @@
             audio.play();
             playBtn.textContent = '⏸️';
             vinyl.style.animationPlayState = 'running';
+            setEqState(true);
             spawnHeartsBurst(10);
         }
 
@@ -571,6 +667,7 @@
             audio.play();
             playBtn.textContent = '⏸️';
             vinyl.style.animationPlayState = 'running';
+            setEqState(true);
             spawnHeartsBurst(10);
         }
 
@@ -599,7 +696,7 @@
         }
 
 
-        // --- 2. СИСТЕМА ЛЕТАЮЩИХ СЕРДЕЧЕК ---
+        // --- 3. СИСТЕМА ЛЕТАЮЩИХ СЕРДЕЧЕК И КЛИКОВ ---
         const heartsContainer = document.getElementById('heartsContainer');
 
         function spawnHeart() {
@@ -626,7 +723,7 @@
         for (let i = 0; i < 35; i++) {
             spawnHeart();
         }
-        setInterval(spawnHeart, 400);
+        setInterval(spawnHeart, 450);
 
         function spawnHeartsBurst(count) {
             for (let i = 0; i < count; i++) {
@@ -634,8 +731,26 @@
             }
         }
 
+        document.body.addEventListener('click', (e) => {
+            const heart = document.createElement('div');
+            heart.classList.add('click-heart');
+            
+            const size = Math.random() * 15 + 15; 
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            heart.style.left = `${e.clientX}px`;
+            heart.style.top = `${e.clientY}px`;
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 1200); 
+        });
 
-        // --- 3. ГЕНЕРАТОР МИЛОСТЕЙ ОТ ТЁМЫ ---
+
+        // --- 4. ГЕНЕРАТОР МИЛОСТЕЙ ОТ ТЁМЫ ---
         async function generateMessage() {
             const messageBox = document.getElementById('messageBox');
             const genBtn = document.getElementById('genBtn');
