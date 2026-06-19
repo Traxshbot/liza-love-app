@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для моей любимой Лизы 💖</title>
-    <!-- Подключаем милый шрифт -->
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,11 +17,12 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Анимированные сердечки на фоне */
-        .hearts {
-            position: absolute;
+        /* Намного больше летающих сердечек */
+        .hearts-container {
+            position: fixed;
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -34,18 +34,27 @@
         .heart {
             position: absolute;
             display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 133, 162, 0.3);
-            animation: animate 25s linear infinite;
-            bottom: -150px;
+            background: rgba(255, 105, 140, 0.45);
+            animation: floatUp 15s linear infinite;
+            bottom: -100px;
             clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
         }
 
-        @keyframes animate {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
         }
 
         .container {
@@ -53,118 +62,159 @@
             width: 90%;
             max-width: 400px;
             margin: 20px auto;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.4);
             padding: 25px;
             text-align: center;
             box-sizing: border-box;
-            border: 2px solid rgba(255, 182, 193, 0.5);
+            border: 2px solid rgba(255, 182, 193, 0.6);
         }
 
         h1 {
-            font-size: 20px;
-            color: #ff5e7e;
-            margin-bottom: 20px;
+            font-size: 19px;
+            color: #ff476c;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
         }
 
-        /* Визуальный плеер */
+        /* Улучшенный плеер */
         .player-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 25px;
-            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            margin-bottom: 20px;
+            border: 1px solid #ffe3e3;
         }
 
         .vinyl-container {
-            width: 130px;
-            height: 130px;
+            width: 140px;
+            height: 140px;
             margin: 0 auto 15px auto;
             position: relative;
         }
 
+        /* Виниловая пластинка с обложкой по центру */
         .vinyl {
             width: 100%;
             height: 100%;
-            background: #282828;
+            background: #1c1c1c;
             border-radius: 50%;
-            border: 5px solid #ffb3b3;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 6px solid #ffd1d8;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: spin 5s linear infinite;
+            animation: spin 6s linear infinite;
             animation-play-state: paused;
+            transition: border-color 0.3s;
         }
 
         @keyframes spin {
             100% { transform: rotate(360deg); }
         }
 
-        .vinyl-center {
-            width: 40px;
-            height: 40px;
-            background: #ff85a2;
+        /* Место под обложку */
+        .vinyl-cover {
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid white;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         .track-info {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .track-title {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 15px;
+            color: #333;
         }
         .track-sub {
-            font-size: 12px;
+            font-size: 11px;
             color: #888;
+            margin-top: 3px;
+        }
+
+        /* Ползунок перемотки */
+        .timeline-container {
+            margin: 15px 0 10px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            accent-color: #ff5e7e;
+            background: #ffe3e3;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+        }
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #999;
             margin-top: 4px;
         }
 
-        /* Кнопки управления плеером */
+        /* Элементы управления */
         .controls {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .btn-control {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .btn-control:active {
+            transform: scale(0.85);
         }
 
         .btn-play {
-            background: #ff5e7e;
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 94, 126, 0.4);
-            transition: 0.2s;
-        }
-        .btn-play:active {
-            transform: scale(0.95);
+            box-shadow: 0 4px 12px rgba(255, 94, 126, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Секция записок с ИИ */
+        /* Секция ИИ записок */
         .ai-section {
             background: #fff;
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
+            border: 1px solid #ffe3e3;
         }
 
         .message-box {
-            min-height: 100px;
+            min-height: 80px;
             border: 2px dashed #ffb3b3;
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 15px;
             font-size: 13px;
             line-height: 1.6;
@@ -173,11 +223,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: #555;
         }
 
         .btn-generate {
-            background: linear-gradient(45deg, #ff85a2, #ff5e7e);
+            background: linear-gradient(45deg, #ff758c, #ff476c);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -186,12 +236,12 @@
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 94, 126, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 71, 108, 0.3);
             transition: 0.2s;
             width: 100%;
         }
         .btn-generate:disabled {
-            background: #ccc;
+            background: #ddd;
             box-shadow: none;
             cursor: not-allowed;
         }
@@ -199,7 +249,8 @@
 </head>
 <body>
 
-    <div class="hearts" id="heart-container"></div>
+    <!-- Много-много летающих сердечек -->
+    <div class="hearts-container" id="heartsContainer"></div>
 
     <div class="container">
         <h1>Для любимой Лизы 🌸</h1>
@@ -208,51 +259,99 @@
         <div class="player-card">
             <div class="vinyl-container">
                 <div class="vinyl" id="vinyl">
-                    <div class="vinyl-center">❤️</div>
+                    <div class="vinyl-cover" id="vinylCover">❤️</div>
                 </div>
             </div>
+            
             <div class="track-info">
-                <div class="track-title">Мелодия твоей улыбки</div>
-                <div class="track-sub">С любовью от твоего парня ✨</div>
+                <div class="track-title" id="trackTitle">Название песни</div>
+                <div class="track-sub" id="trackSub">Исполнитель</div>
             </div>
+
+            <!-- Шкала перемотки -->
+            <div class="timeline-container">
+                <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100">
+                <div class="time-info">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+
+            <!-- Управление -->
             <div class="controls">
+                <button class="btn-control" onclick="prevTrack()">⏮️</button>
                 <button class="btn-play" id="playBtn">▶️</button>
+                <button class="btn-control" onclick="nextTrack()">⏭️</button>
             </div>
-            <!-- Скрытый аудиоэлемент (Замените ссылку на свою песню или lofi-радио) -->
-            <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+            <audio id="audio"></audio>
         </div>
 
-        <!-- Послания от ИИ -->
+        <!-- Послания от Тёмы -->
         <div class="ai-section">
             <div class="message-box" id="messageBox">
                 Нажми на кнопку ниже, чтобы получить теплое послание, которое я создал специально для тебя... 💌
             </div>
-            <button class="btn-generate" id="genBtn" onclick="generateMessage()">Сгенерировать милость ✨</button>
+            <button class="btn-generate" id="genBtn" onclick="generateMessage()">Получить милость от Тёмы ✨</button>
         </div>
     </div>
 
     <script>
-        // Создание фоновых сердечек
-        const container = document.getElementById('heart-container');
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 15 + 's';
-            heart.style.animationDuration = Math.random() * 10 + 15 + 's';
-            container.appendChild(heart);
-        }
+        // --- 1. ПЛЕЙЛИСТ ТРЕКОВ ---
+        // Вы можете менять эти ссылки на свои! Если загрузите песню "song1.mp3" и картинку "cover1.jpg"
+        // в репозиторий на GitHub, ссылки будут иметь вид: "./song1.mp3" и "./cover1.jpg"
+        const playlist = [
+            {
+                title: "Наша особенная песня ✨",
+                artist: "С любовью от Тёмы",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Сюда вставьте ссылку на ваш mp3
+                cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300&auto=format&fit=crop" // Сюда ссылку на картинку
+            },
+            {
+                title: "Ещё один милый трек для тебя 💝",
+                artist: "Для Лизочки",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                cover: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=300&auto=format&fit=crop"
+            },
+            {
+                title: "Колыбельная для любимой 💤",
+                artist: "Тёма",
+                src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                cover: "https://images.unsplash.com/photo-1502444330042-d1a1ddf9bb5c?q=80&w=300&auto=format&fit=crop"
+            }
+        ];
 
-        // Логика плеера
+        let currentTrackIndex = 0;
         const audio = document.getElementById('audio');
         const playBtn = document.getElementById('playBtn');
         const vinyl = document.getElementById('vinyl');
+        const vinylCover = document.getElementById('vinylCover');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackSub = document.getElementById('trackSub');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeText = document.getElementById('currentTime');
+        const totalTimeText = document.getElementById('totalTime');
 
+        // Инициализация первого трека
+        function loadTrack(index) {
+            const track = playlist[index];
+            audio.src = track.src;
+            trackTitle.textContent = track.title;
+            trackSub.textContent = track.artist;
+            vinylCover.style.backgroundImage = `url('${track.cover}')`;
+            vinylCover.textContent = ''; // Убираем эмодзи-сердечко, так как теперь есть обложка
+            progressBar.value = 0;
+        }
+
+        loadTrack(currentTrackIndex);
+
+        // Воспроизведение / Пауза
         playBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
                 playBtn.textContent = '⏸️';
                 vinyl.style.animationPlayState = 'running';
+                spawnHeartsBurst(10); // Взрыв сердечек при старте музыки!
             } else {
                 audio.pause();
                 playBtn.textContent = '▶️';
@@ -260,16 +359,108 @@
             }
         });
 
-        // Функция генерации писем от бесплатной нейросети (Pollinations AI)
+        // Переключение на следующий трек
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(currentTrackIndex);
+            audio.play();
+            playBtn.textContent = '⏸️';
+            vinyl.style.animationPlayState = 'running';
+            spawnHeartsBurst(10);
+        }
+
+        // Переключение на предыдущий трек
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrackIndex);
+            audio.play();
+            playBtn.textContent = '⏸️';
+            vinyl.style.animationPlayState = 'running';
+            spawnHeartsBurst(10);
+        }
+
+        // Автопереключение на следующий трек по окончании текущего
+        audio.addEventListener('ended', nextTrack);
+
+        // Обновление прогресс-бара
+        audio.addEventListener('timeupdate', () => {
+            if (!isNaN(audio.duration)) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = progress;
+                currentTimeText.textContent = formatTime(audio.currentTime);
+                totalTimeText.textContent = formatTime(audio.duration);
+            }
+        });
+
+        // Перемотка трека ползунком
+        progressBar.addEventListener('input', () => {
+            if (!isNaN(audio.duration)) {
+                const newTime = (progressBar.value / 100) * audio.duration;
+                audio.currentTime = newTime;
+            }
+        });
+
+        // Форматирование времени (00:00)
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+
+        // --- 2. СИСТЕМА ЛЕТАЮЩИХ СЕРДЕЧЕК ---
+        const heartsContainer = document.getElementById('heartsContainer');
+
+        // Постоянная генерация фонового дождя из сердечек
+        function spawnHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Случайные параметры для каждого сердечка
+            const size = Math.random() * 20 + 10; // размер от 10px до 30px
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = Math.random() * 8 + 8 + 's'; // полет от 8 до 16 секунд
+            
+            // Разные оттенки розового и красного
+            const colors = ['rgba(255, 71, 108, 0.45)', 'rgba(255, 117, 140, 0.45)', 'rgba(255, 153, 172, 0.45)'];
+            heart.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            heartsContainer.appendChild(heart);
+
+            // Удаляем сердечко после завершения анимации
+            setTimeout(() => {
+                heart.remove();
+            }, 16000);
+        }
+
+        // Запуск фоновых сердечек (35 штук сразу и регулярный спавн новых)
+        for (let i = 0; i < 35; i++) {
+            spawnHeart();
+        }
+        setInterval(spawnHeart, 400);
+
+        // Функция взрыва сердечек (например, при нажатии кнопок или генерации письма)
+        function spawnHeartsBurst(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(spawnHeart, i * 50);
+            }
+        }
+
+
+        // --- 3. ГЕНЕРАТОР МИЛОСТЕЙ ОТ ТЁМЫ ---
         async function generateMessage() {
             const messageBox = document.getElementById('messageBox');
             const genBtn = document.getElementById('genBtn');
             
-            messageBox.innerHTML = "✨ Создаю нежное послание для Лизоньки...";
+            messageBox.innerHTML = "✨ Тёма сочиняет для тебя что-то волшебное...";
             genBtn.disabled = true;
+            spawnHeartsBurst(15); // Много сердечек при создании письма!
 
-            const systemPrompt = "Ты — любящий парень девушки по имени Лиза. Твоя единственная цель — написать ей нежное, любящее, очень теплое и милое сообщение на русском языке. Используй милые смайлики (сердечки, котики, звездочки). Пиши искренне, романтично, подними ей настроение, пожелай отличного дня или скажи, какая она невероятная.";
-            const userPrompt = "Напиши короткое, очень милое признание в любви для Лизы.";
+            const systemPrompt = "Ты — любящий парень по имени Тёма. Твоя единственная цель — написать твоей любимой девушке Лизе невероятно нежное, ласковое, любящее и милое сообщение на русском языке. Используй милые смайлики (сердечки, котики, звездочки). Пиши искренне, тепло, подними ей настроение, пожелай отличного дня или скажи, какая она потрясающая. Обращайся к ней ласково (Лиза, Лизонька, любимая).";
+            const userPrompt = "Напиши короткое милое признание в любви для Лизы от Тёмы.";
 
             try {
                 const response = await fetch('https://text.pollinations.ai/', {
@@ -286,9 +477,10 @@
                     })
                 });
                 const text = await response.text();
-                messageBox.innerHTML = text || "Лизонька, я тебя очень сильно люблю! Ты — мое самое настоящее чудо. 💖";
+                messageBox.innerHTML = text || "Лизонька, я тебя безумно сильно люблю! Ты — мое самое настоящее чудо. Твой Тёма. 💖";
+                spawnHeartsBurst(15); // Еще один взрыв сердечек, когда письмо появилось!
             } catch (error) {
-                messageBox.innerHTML = "Лизочка, даже если интернет не работает, знай: я люблю тебя сильнее всех на свете! Каждую секунду думаю только о тебе. 💖";
+                messageBox.innerHTML = "Лизочка, даже если интернет балуется, знай: мой мир крутится только вокруг тебя. Я люблю тебя сильнее всех на свете! Твой Тёма. 💖";
             } finally {
                 genBtn.disabled = false;
             }
